@@ -7,3 +7,8 @@ require (
 	github.com/go-gl/glfw v0.0.0-20240306074159-ea2d69986ecb
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20240306074159-ea2d69986ecb
 )
+
+require (
+	github.com/go-gl/mathgl v1.1.0 // indirect
+	golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f // indirect
+)
