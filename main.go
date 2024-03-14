@@ -5,7 +5,6 @@ import (
 	"log"
 	"rubik/gfx"
 	"runtime"
-	"unsafe"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -125,6 +124,7 @@ func programLoop(window *glfw.Window) error {
 
 	vertices := []float32{
 		// position        // texture position
+		//  X, Y, Z, U, V
 		-0.5, -0.5, -0.5, 0.0, 0.0,
 		0.5, -0.5, -0.5, 1.0, 0.0,
 		0.5, 0.5, -0.5, 1.0, 1.0,
@@ -205,17 +205,12 @@ func programLoop(window *glfw.Window) error {
 		viewTransform := mgl32.Translate3D(0, 0, -3)
 		projectTransform := mgl32.Perspective(mgl32.DegToRad(60), windowWidth/windowHeight, 0.1, 100.0)
 
-		gl.UniformMatrix4fv(program.GetUniformLocation("view"), 1, false,
-			&viewTransform[0])
-		gl.UniformMatrix4fv(program.GetUniformLocation("project"), 1, false,
-			&projectTransform[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("view"), 1, false, &viewTransform[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("project"), 1, false, &projectTransform[0])
 
-		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateX"), 1, false,
-			&rotateX[0])
-		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateY"), 1, false,
-			&rotateY[0])
-		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateZ"), 1, false,
-			&rotateZ[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateX"), 1, false, &rotateX[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateY"), 1, false, &rotateY[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("worldRotateZ"), 1, false, &rotateZ[0])
 
 		gl.BindVertexArray(VAO)
 
@@ -239,17 +234,4 @@ func programLoop(window *glfw.Window) error {
 	}
 
 	return nil
-}
-
-func colorCube() {
-	cubeIndices := [24]byte{
-		0, 3, 2, 1,
-		2, 3, 7, 6,
-		0, 4, 7, 3,
-		1, 2, 6, 5,
-		4, 5, 6, 7,
-		0, 1, 5, 4,
-	}
-	p := unsafe.Pointer(&cubeIndices)
-	gl.DrawElements(gl.QUADS, 24, gl.UNSIGNED_BYTE, p)
 }
