@@ -186,10 +186,7 @@ func programLoop(window *win.Window) error {
 
 		// creates perspective
 		fov := float32(60.0)
-		projectTransform := mgl32.Perspective(mgl32.DegToRad(fov),
-			float32(window.Width())/float32(window.Height()),
-			0.1,
-			100.0)
+		projectTransform := mgl32.Perspective(mgl32.DegToRad(fov), float32(window.Width())/float32(window.Height()), 0.1, 100.0)
 
 		camTransform := camera.GetTransform()
 		lightPos := mgl32.Vec3{1.2, 1, 2}
@@ -198,8 +195,7 @@ func programLoop(window *win.Window) error {
 
 		program.Use()
 		gl.UniformMatrix4fv(program.GetUniformLocation("camera"), 1, false, &camTransform[0])
-		gl.UniformMatrix4fv(program.GetUniformLocation("project"), 1, false,
-			&projectTransform[0])
+		gl.UniformMatrix4fv(program.GetUniformLocation("project"), 1, false, &projectTransform[0])
 
 		gl.BindVertexArray(VAO)
 
@@ -213,9 +209,7 @@ func programLoop(window *win.Window) error {
 			worldTranslate := mgl32.Translate3D(pos[0], pos[1], pos[2])
 			worldTransform := (worldTranslate.Mul4(rotateX.Mul3(rotateY).Mul3(rotateZ).Mat4()))
 
-			gl.UniformMatrix4fv(program.GetUniformLocation("world"), 1, false,
-				&worldTransform[0])
-
+			gl.UniformMatrix4fv(program.GetUniformLocation("world"), 1, false, &worldTransform[0])
 			gl.DrawArrays(gl.TRIANGLES, 0, 36)
 		}
 		gl.BindVertexArray(0)
